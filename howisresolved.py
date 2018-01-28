@@ -3,6 +3,14 @@
 
 # resolve a domain from different nameservers
 
+__author__ = "GB Pullarà"
+__copyright__ = "Copyright 2018"
+__credits__ = [""]
+__license__ = "BSD-3clause"
+__version__ = "0.1.0"
+__maintainer__ = "gionniboy"
+__email__ = "giovbat@gmail.com"
+__status__ = "Development"
 
 #
 # TODO: argparse instead sys.argv
@@ -26,6 +34,14 @@ else:
 
 
 def download_publicdns(dnsfile):
+    """Download valid nameservers list from public-dns.info
+
+    :param dnsfile: filename
+    :param type: string from position arg
+
+    :return: a list of nameservers and a file on disk
+    :rtype: list
+    """
     try:
         url = 'https://public-dns.info/nameservers.txt'
         data = requests.get(url)
@@ -43,6 +59,17 @@ def download_publicdns(dnsfile):
 
 
 def generate_dns(dnsfile):
+    """Generate dns list
+    by default it download a valid nameserver list from https://public-dns.info/
+    and write it on nameservers.txt [TODO: if more old than 2 days]
+    or you can pass a dns list throught a txt file to it
+
+    :param dnsfile: txt file with dns list
+    :type dnsfile: string
+
+    :return: a list of nameservers
+    :rtype: list
+    """
     try:
         if not os.path.exists(dnsfile):
             download_publicdns(dnsfile)
@@ -66,6 +93,17 @@ def generate_dns(dnsfile):
 
 
 def resolve(domain, dnsfile):
+    """Resolve domain
+
+    :param domain: domain.tld to be resolved
+    :type domain: string from positional args
+
+    :param dnsfile: filename.txt
+    :type dnsfile: list from positional args
+
+    :return: domain resolved with specified nameserver
+    :rtype: string
+    """
 
     my_resolver = dns.resolver.Resolver(configure=False)
     my_resolver.nameservers = generate_dns(dnsfile)

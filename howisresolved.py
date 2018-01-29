@@ -13,7 +13,6 @@ __email__ = "giovbat@gmail.com"
 __status__ = "Development"
 
 #
-# TODO: argparse instead sys.argv
 # TODO: multithreading
 #
 
@@ -22,6 +21,7 @@ import re
 import sys
 import time
 import random
+import argparse
 import dns.resolver
 import requests
 
@@ -108,11 +108,14 @@ def resolve(domain, dnsfile, dnsrand):
     :param dnsfile: filename.txt
     :type dnsfile: list from positional args
 
+    :param dnsrand: number of dns to use
+    :type dnsrand: int
+
     :return: domain resolved with specified nameserver
     :rtype: string
     """
 
-    validate_domain(DOMAIN)
+    validate_domain(domain)
     my_resolver = dns.resolver.Resolver(configure=False)
     my_resolver.nameservers = generate_dns(dnsfile)
     # use random.sample to mantain the type [list]
@@ -129,17 +132,25 @@ def resolve(domain, dnsfile, dnsrand):
         print(err)
         sys.exit(42)
 
+def main():
+    """ main """
+    parser = argparse.ArgumentParser(
+        description='Check domain with different nameservers')
+    parser.add_argument('domain', type=str, help="Domain to check.")
+    parser.add_argument('dnsfile', type=str, help='Dnsfile text to read nameservers from.')
+    parser.add_argument('dnsrand', type=int, help='how many ns pick from list and test.')
+    args = parser.parse_args()
 
-if __name__ == '__main__':
-    if len(sys.argv) > 3:
-        DOMAIN = sys.argv[1]
-        DNSFILE = sys.argv[2]
-        DNSRAND = int(sys.argv[3])
-    else:
-        sys.exit("Specify domain to resolve, dnsfile and how many dns use")
+    DOMAIN = args.domain
+    DNSFILE = args.dnsfile
+    DNSRAND = args.dnsrand
 
     try:
         resolve(DOMAIN, DNSFILE, DNSRAND)
     except KeyboardInterrupt:
         print("interrupted, stopping ...")
         sys.exit(42)
+
+
+if __name__ == '__main__':
+    main()

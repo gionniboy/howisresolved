@@ -14,8 +14,6 @@ __status__ = "Development"
 
 #
 # TODO: argparse instead sys.argv
-# TODO: choose 10 random dns and check with all them
-# TODO: option to choose how many dns pick from list
 # TODO: multithreading
 #
 
@@ -89,8 +87,8 @@ def generate_dns(dnsfile):
             print("dns list older than 2 days: updating from public-dns.info")
             download_publicdns(dnsfile)
 
-        with open(dnsfile, 'r') as ns:
-            dnslist = [line.rstrip() for line in ns]
+        with open(dnsfile, 'r') as nameserver:
+            dnslist = [line.rstrip() for line in nameserver]
             return dnslist
 
     except PermissionError as err:
@@ -101,7 +99,7 @@ def generate_dns(dnsfile):
         sys.exit('IO error')
 
 
-def resolve(domain, dnsfile):
+def resolve(domain, dnsfile, dnsrand):
     """Resolve domain
 
     :param domain: domain.tld to be resolved
@@ -119,23 +117,29 @@ def resolve(domain, dnsfile):
     my_resolver.nameservers = generate_dns(dnsfile)
     # use random.sample to mantain the type [list]
     secure_random = random.SystemRandom()
-    my_resolver.nameservers = secure_random.sample(my_resolver.nameservers, 1)
+    my_resolver.nameservers = secure_random.sample(my_resolver.nameservers, dnsrand)
+    print("random nameserver: {}".format(str(my_resolver.nameservers)))
     try:
-        print("random nameserver: {}".format(str(my_resolver.nameservers)))
-        my_answers = my_resolver.query(domain)
-        for rdata in my_answers:
-            print("{} IP: {}".format(domain, rdata))
-            # return rdata
+        for nameserver in my_resolver.nameservers:
+            my_answers = my_resolver.query(domain)
+            for rdata in my_answers:
+                print("{0} IP {1} resolved by {2}".format(domain, rdata, nameserver))
+                # return rdata
     except dns.exception.DNSException as err:
         print(err)
         sys.exit(42)
 
 
 if __name__ == '__main__':
-    if len(sys.argv) > 2:
+    if len(sys.argv) > 3:
         DOMAIN = sys.argv[1]
         DNSFILE = sys.argv[2]
+        DNSRAND = int(sys.argv[3])
     else:
-        sys.exit("Specify domain to resolve and dns file")
+        sys.exit("Specify domain to resolve, dnsfile and how many dns use")
 
-    resolve(DOMAIN, DNSFILE)
+    try:
+        resolve(DOMAIN, DNSFILE, DNSRAND)
+    except KeyboardInterrupt:
+        print("interrupted, stopping ...")
+        sys.exit(42)

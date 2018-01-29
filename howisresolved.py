@@ -5,7 +5,7 @@
 
 __author__ = "GB Pullarà"
 __copyright__ = "Copyright 2018"
-__credits__ = [""]
+__credits__ = ["joeyrs"]
 __license__ = "BSD-3clause"
 __version__ = "0.1.0"
 __maintainer__ = "gionniboy"
@@ -27,19 +27,20 @@ import random
 import dns.resolver
 import requests
 
-if len(sys.argv) > 2:
-    DOMAIN = sys.argv[1]
-    DNSFILE = sys.argv[2]
-else:
-    sys.exit("Specify domain to resolve and dns file")
 
 def validate_domain(domain):
-    """Validate domain:
-    Check if the argument is a syntax-valid domain.
+    """Check if the argument is a syntax-valid domain.
+
+    :param domain: domain string from positional arg
+    :param type: string
+
+    :return: validate or exit
     """
-    domain_regex = re.compile('^(?=.{4,255}$)([a-zA-Z0-9][a-zA-Z0-9-]{,61}[a-zA-Z0-9]\.)+[a-zA-Z0-9]{2,5}$')
+    domain_regex = re.compile(
+        r'^(?=.{4,255}$)([a-zA-Z0-9][a-zA-Z0-9-]{,61}[a-zA-Z0-9]\.)+[a-zA-Z0-9]{2,5}$')
     if not domain_regex.match(domain):
         sys.exit("Invalid domain specified.")
+
 
 def download_publicdns(dnsfile):
     """Download valid nameservers list from public-dns.info
@@ -69,7 +70,7 @@ def download_publicdns(dnsfile):
 def generate_dns(dnsfile):
     """Generate dns list
     by default it download a valid nameserver list from https://public-dns.info/
-    and write it on nameservers.txt [TODO: if more old than 2 days]
+    and write it on file
     or you can pass a dns list throught a txt file to it
 
     :param dnsfile: txt file with dns list
@@ -85,7 +86,7 @@ def generate_dns(dnsfile):
         filestat = os.stat(dnsfile)
         file_age = time.time() - filestat.st_mtime
         if file_age > (86400 * 2):
-            print("dns list older than 2 days: updating from public-dns")
+            print("dns list older than 2 days: updating from public-dns.info")
             download_publicdns(dnsfile)
 
         with open(dnsfile, 'r') as ns:
@@ -112,15 +113,15 @@ def resolve(domain, dnsfile):
     :return: domain resolved with specified nameserver
     :rtype: string
     """
-    
+
     validate_domain(DOMAIN)
     my_resolver = dns.resolver.Resolver(configure=False)
     my_resolver.nameservers = generate_dns(dnsfile)
     # use random.sample to mantain the type [list]
     secure_random = random.SystemRandom()
     my_resolver.nameservers = secure_random.sample(my_resolver.nameservers, 1)
-    print("random nameserver: {}".format(str(my_resolver.nameservers)))
     try:
+        print("random nameserver: {}".format(str(my_resolver.nameservers)))
         my_answers = my_resolver.query(domain)
         for rdata in my_answers:
             print("{} IP: {}".format(domain, rdata))
@@ -131,4 +132,10 @@ def resolve(domain, dnsfile):
 
 
 if __name__ == '__main__':
+    if len(sys.argv) > 2:
+        DOMAIN = sys.argv[1]
+        DNSFILE = sys.argv[2]
+    else:
+        sys.exit("Specify domain to resolve and dns file")
+
     resolve(DOMAIN, DNSFILE)

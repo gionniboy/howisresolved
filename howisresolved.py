@@ -20,6 +20,7 @@ __status__ = "Development"
 #
 
 import os
+import re
 import sys
 import time
 import random
@@ -32,6 +33,13 @@ if len(sys.argv) > 2:
 else:
     sys.exit("Specify domain to resolve and dns file")
 
+def validate_domain(domain):
+    """Validate domain:
+    Check if the argument is a syntax-valid domain.
+    """
+    domain_regex = re.compile('^(?=.{4,255}$)([a-zA-Z0-9][a-zA-Z0-9-]{,61}[a-zA-Z0-9]\.)+[a-zA-Z0-9]{2,5}$')
+    if not domain_regex.match(domain):
+        sys.exit("Invalid domain specified.")
 
 def download_publicdns(dnsfile):
     """Download valid nameservers list from public-dns.info
@@ -104,7 +112,8 @@ def resolve(domain, dnsfile):
     :return: domain resolved with specified nameserver
     :rtype: string
     """
-
+    
+    validate_domain(DOMAIN)
     my_resolver = dns.resolver.Resolver(configure=False)
     my_resolver.nameservers = generate_dns(dnsfile)
     # use random.sample to mantain the type [list]

@@ -7,18 +7,15 @@ __author__ = "GB Pullarà"
 __copyright__ = "Copyright 2018"
 __credits__ = ["joeyrs"]
 __license__ = "BSD-3clause"
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 __maintainer__ = "gionniboy"
 __email__ = "giovbat@gmail.com"
 __status__ = "Development"
 
-#
-# TODO: multithreading
-#
 
 import os
-import re
 import sys
+import re
 import time
 import random
 import argparse

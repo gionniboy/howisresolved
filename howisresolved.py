@@ -7,7 +7,7 @@ __author__ = "GB Pullarà"
 __copyright__ = "Copyright 2018"
 __credits__ = ["joeyrs"]
 __license__ = "BSD-3clause"
-__version__ = "0.2.0"
+__version__ = "0.2.3"
 __maintainer__ = "gionniboy"
 __email__ = "giovbat@gmail.com"
 __status__ = "Development"
@@ -19,8 +19,36 @@ import re
 import time
 import random
 import argparse
+
+import json
+import logging
+import logging.config
+
 import dns.resolver
 import requests
+
+
+# istanziate logger
+LOGGER = logging.getLogger(__name__)
+
+
+def setup_logging(filepath="logging.json", log_level=logging.INFO):
+    """ setup logging based on json dict
+
+    :param filepath: filename
+    :param type: string
+
+    """
+    if not os.path.exists(filepath):
+        LOGGER.error('no logging config file founded.')
+        sys.exit('Create logging.json config file and restart.')
+
+    with open(filepath, 'r') as fileconfig:
+         config = json.load(fileconfig)
+    logging.config.dictConfig(config)
+    LOGGER.info('LOGGING SETUP from JSON %s', filepath)
+
+    LOGGER.debug('LOGGING OK - path %s - level %s', filepath, log_level)
 
 
 def validate_domain(domain):
@@ -50,15 +78,15 @@ def download_publicdns(dnsfile):
         url = 'https://public-dns.info/nameservers.txt'
         data = requests.get(url)
         open(dnsfile, 'wb').write(data.content)
-        print("file saved on disk {}".format(dnsfile))
+        LOGGER.debug("file saved on disk %s", dnsfile)
     except requests.exceptions.ConnectionError as err:
-        print(err)
+        LOGGER.error(err)
         sys.exit('connection error')
     except PermissionError as err:
-        print(err)
+        LOGGER.error(err)
         sys.exit('permission error')
     except IOError as err:
-        print(err)
+        LOGGER.error(err)
         sys.exit('IO error')
 
 
@@ -81,7 +109,7 @@ def generate_dns(dnsfile):
         filestat = os.stat(dnsfile)
         file_age = time.time() - filestat.st_mtime
         if file_age > (86400 * 2):
-            print("dns list older than 2 days: updating from public-dns.info")
+            LOGGER.info("dns list older than 2 days: updating from public-dns.info")
             download_publicdns(dnsfile)
 
         with open(dnsfile, 'r') as nameserver:
@@ -89,10 +117,10 @@ def generate_dns(dnsfile):
             return dnslist
 
     except PermissionError as err:
-        print(err)
+        LOGGER.error(err)
         sys.exit('permission error')
     except IOError as err:
-        print(err)
+        LOGGER.error(err)
         sys.exit('IO error')
 
 
@@ -111,31 +139,32 @@ def resolve(domain, dnsfile, dnsrand):
     :return: domain resolved with specified nameserver
     :rtype: string
     """
-
     validate_domain(domain)
     my_resolver = dns.resolver.Resolver(configure=False)
     my_resolver.nameservers = generate_dns(dnsfile)
     # use random.sample to mantain the type [list]
     secure_random = random.SystemRandom()
     my_resolver.nameservers = secure_random.sample(my_resolver.nameservers, dnsrand)
-    print("random nameserver: {}".format(str(my_resolver.nameservers)))
+    LOGGER.info("random nameserver: %s", str(my_resolver.nameservers))
     try:
         for nameserver in my_resolver.nameservers:
             my_answers = my_resolver.query(domain)
             for rdata in my_answers:
-                print("{0} IP {1} resolved by {2}".format(domain, rdata, nameserver))
+                LOGGER.info("%s IP %s resolved by %s", domain, rdata, nameserver)
                 # return rdata
     except dns.exception.DNSException as err:
-        print(err)
+        LOGGER.error("DNSException %s", err)
         sys.exit(42)
+
 
 def main():
     """ main """
     parser = argparse.ArgumentParser(
-        description='Check domain with different nameservers')
-    parser.add_argument('domain', type=str, help="Domain to check.")
-    parser.add_argument('dnsfile', type=str, help='Dnsfile text to read nameservers from.')
-    parser.add_argument('dnsrand', type=int, help='how many ns pick from list and test.')
+        description='Check domain with different nameservers.',
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser.add_argument('--domain', type=str, help="Domain to check.")
+    parser.add_argument('--dnsfile', default="./dnslist.txt", type=str, help='Dnsfile text to read nameservers from.')
+    parser.add_argument('--dnsrand', default=3, type=int, help='how many ns pick from list and test.')
     args = parser.parse_args()
 
     DOMAIN = args.domain
@@ -150,4 +179,5 @@ def main():
 
 
 if __name__ == '__main__':
+    setup_logging()
     main()

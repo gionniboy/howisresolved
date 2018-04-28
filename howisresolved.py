@@ -123,7 +123,7 @@ def generate_dns(dnsfile):
         sys.exit('IO error')
 
 
-def resolve(domain, dnsfile, dnsrand):
+def resolve(domain, dnsfile, dnsrand, expect):
     """Resolve domain
 
     :param domain: domain.tld to be resolved
@@ -134,6 +134,9 @@ def resolve(domain, dnsfile, dnsrand):
 
     :param dnsrand: number of dns to use
     :type dnsrand: int
+
+    :param expect: real ip address
+    :type expect: string
 
     :return: domain resolved with specified nameserver
     :rtype: string
@@ -150,6 +153,8 @@ def resolve(domain, dnsfile, dnsrand):
             my_answers = my_resolver.query(domain)
             for rdata in my_answers:
                 LOGGER.info("%s IP %s resolved by %s", domain, rdata, nameserver)
+                if str(rdata) != expect:
+                    LOGGER.warning("IP expected %s doesn't match %s from %s! ALERT!", expect, rdata, nameserver)
                 # return rdata
     except dns.exception.DNSException as err:
         LOGGER.error("DNSException %s", err)
@@ -164,14 +169,15 @@ def main():
     parser.add_argument('--domain', type=str, help="Domain to check.")
     parser.add_argument('--dnsfile', default="./dnslist.txt", type=str, help='Dnsfile text to read nameservers from.')
     parser.add_argument('--dnsrand', default=6, type=int, help='how many ns pick from list and test.')
+    parser.add_argument('--expect', help='Set an expected IP to check against DNS results.')
     args = parser.parse_args()
 
     DOMAIN = args.domain
     DNSFILE = args.dnsfile
     DNSRAND = args.dnsrand
-
+    EXPECT = args.expect
     try:
-        resolve(DOMAIN, DNSFILE, DNSRAND)
+        resolve(DOMAIN, DNSFILE, DNSRAND, EXPECT)
     except KeyboardInterrupt:
         print("interrupted, stopping ...")
         sys.exit(42)

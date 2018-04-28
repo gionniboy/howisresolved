@@ -12,7 +12,7 @@ By default it is dnslist.txt and contain six major dns.
 - 64.6.64.6 - Verisign
 - 208.67.222.222 - OpenDNS
 
-If not present the script download a list of valid nameservers from [public-dns.info](https://public-dns.info/).
+If the dnsfile.txt is not present the script download a list of valid nameservers from [public-dns.info](https://public-dns.info/).
 
 An output on logfile is generated.
 On cli too if debug is active. [check logging.json]
@@ -31,15 +31,18 @@ $ pipenv run python howisresolved.py --help
 
 ## Example
 ```console
-$ pipenv run python howisresolved.py --domain python.org --dnsfile dnslist.txt --dnsrand 3
-$ pipenv run python howisresolved.py --domain python.org
-$ pipenv run python howisresolved.py --domain python.org --dnsrand 3
+$ pipenv run python howisresolved.py --domain python.org --expect 23.253.135.79
+$ pipenv run python howisresolved.py --domain python.org --dnsfile dnslist.txt --dnsrand 6 --expect 23.253.135.79
+$ pipenv run python howisresolved.py --domain python.org --dnsrand 6 --expect 23.253.135.79
 
-random nameserver: ['123.202.155.89', '83.19.215.58', '78.193.175.96']
+random nameserver: ['4.2.2.1', '8.8.8.8', '9.9.9.9', '1.1.1.1', '208.67.222.222', '64.6.64.6']
 
-python.org IP 23.253.135.79 resolved by 123.202.155.89
-python.org IP 23.253.135.79 resolved by 83.19.215.58
-python.org IP 23.253.135.79 resolved by 78.193.175.96
+python.org IP 23.253.135.79 resolved by 4.2.2.1
+python.org IP 23.253.135.79 resolved by 8.8.8.8
+python.org IP 23.253.135.79 resolved by 9.9.9.9
+python.org IP 23.253.135.79 resolved by 1.1.1.1
+python.org IP 23.253.135.79 resolved by 208.67.222.222
+python.org IP 23.253.135.79 resolved by 64.6.64.6
 ```
 
 issue&&PR || GTFO

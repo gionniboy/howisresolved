@@ -2,6 +2,16 @@
 how is resolved is a little python script to resolve a domain from differents nameservers.
 
 DNS list is passed with a simple txt file.
+
+By default it is dnslist.txt and contain six major dns.
+
+- 1.1.1.1 - CloudFlare
+- 4.2.2.1 - Level3
+- 8.8.8.8 - Google
+- 9.9.9.9 - Quad9
+- 64.6.64.6 - Verisign
+- 208.67.222.222 - OpenDNS
+
 If not present the script download a list of valid nameservers from [public-dns.info](https://public-dns.info/).
 
 An output on logfile is generated.

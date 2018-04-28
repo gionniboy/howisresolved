@@ -44,7 +44,7 @@ def setup_logging(filepath="logging.json", log_level=logging.INFO):
         sys.exit('Create logging.json config file and restart.')
 
     with open(filepath, 'r') as fileconfig:
-         config = json.load(fileconfig)
+        config = json.load(fileconfig)
     logging.config.dictConfig(config)
     LOGGER.info('LOGGING SETUP from JSON %s', filepath)
 
@@ -108,9 +108,8 @@ def generate_dns(dnsfile):
 
         filestat = os.stat(dnsfile)
         file_age = time.time() - filestat.st_mtime
-        if file_age > (86400 * 2):
-            LOGGER.info("dns list older than 2 days: updating from public-dns.info")
-            download_publicdns(dnsfile)
+        if file_age > (86400 * 3):
+            LOGGER.info("dns list older than 3 days: delete it if you want update it automatically")
 
         with open(dnsfile, 'r') as nameserver:
             dnslist = [line.rstrip() for line in nameserver]
@@ -164,7 +163,7 @@ def main():
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument('--domain', type=str, help="Domain to check.")
     parser.add_argument('--dnsfile', default="./dnslist.txt", type=str, help='Dnsfile text to read nameservers from.')
-    parser.add_argument('--dnsrand', default=3, type=int, help='how many ns pick from list and test.')
+    parser.add_argument('--dnsrand', default=6, type=int, help='how many ns pick from list and test.')
     args = parser.parse_args()
 
     DOMAIN = args.domain

@@ -9,20 +9,21 @@ On cli too if debug is active. [check logging.json]
 
 **Python3 required**.
 
-Install requirements.txt for dependencies [dnspython, requests].
-
-Use requirements-dev.txt if you want to contribute to [really appreciate].
+Install dependencies using Pipenv.
+```console
+$ pipenv --three install
+```
 
 For a bit of info
 ```console
-$ python howisresolved.py --help
+$ pipenv run python howisresolved.py --help
 ```
 
 ## Example
 ```console
-$ python howisresolved.py --domain python.org --dnsfile dnslist.txt --dnsrand 3
-$ python howisresolved.py --domain python.org
-$ python howisresolved.py --domain python.org --dnsrand 3
+$ pipenv run python howisresolved.py --domain python.org --dnsfile dnslist.txt --dnsrand 3
+$ pipenv run python howisresolved.py --domain python.org
+$ pipenv run python howisresolved.py --domain python.org --dnsrand 3
 
 random nameserver: ['123.202.155.89', '83.19.215.58', '78.193.175.96']
 

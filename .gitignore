@@ -1,3 +1,7 @@
+dnslist.txt
+*.log
+*.txt
+
 # Created by https://www.gitignore.io/api/osx,linux,python,windows,virtualenv,visualstudiocode
 
 ### Linux ###

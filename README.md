@@ -19,6 +19,7 @@ On cli too if debug is active. [check logging.json]
 
 **Python3 required**.
 
+# To the Users
 Install dependencies using Pipenv.
 ```console
 $ pipenv --three install
@@ -44,6 +45,20 @@ python.org IP 23.253.135.79 resolved by 1.1.1.1
 python.org IP 23.253.135.79 resolved by 208.67.222.222
 python.org IP 23.253.135.79 resolved by 64.6.64.6
 ```
+
+# To Contributors
+Install dev dipendencies to avoid useless issues.
+
+```console
+$ pipenv install -d
+```
+
+To launch tests
+```console
+% pipenv run pytest
+```
+
+
 
 issue&&PR || GTFO
 

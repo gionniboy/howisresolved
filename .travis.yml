@@ -7,12 +7,17 @@ env:
   global:
     - GIT_ASK_YESNO='false'
     - PYTHONIOENCODING='utf-8'
-
+    - CC_TEST_REPORTER_ID=4892bdd6f7e61dcead6547cd119f43b14bc507a699c4ff2db7a838f2b3b66b88
 install:
   - "pip install --upgrade pip"
   - "pip install pipenv"
   - "pipenv install --dev"
   - 'pipenv install --system --dev'
-
+before_script:
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
 script:
   - 'pipenv run time pytest -v'
+after_script:
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT

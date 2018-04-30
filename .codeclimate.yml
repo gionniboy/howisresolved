@@ -1,10 +1,7 @@
----
-engines:
+version: "2"
+plugins:
   duplication:
     enabled: true
-    config:
-      languages:
-      - python
   fixme:
     enabled: true
   radon:
@@ -13,9 +10,6 @@ engines:
     enabled: true
   sonar-python:
     enabled: true
-ratings:
-  paths:
-  - "**.py"
 exclude_paths:
   - ".*"
   - "LICENSE"

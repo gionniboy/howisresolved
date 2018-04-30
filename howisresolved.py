@@ -164,7 +164,6 @@ def resolve(domain, dnsfile, dnsrand, expect):
     :rtype: string
     """
     validate_domain(domain)
-    validate_ip(expect)
     my_resolver = dns.resolver.Resolver(configure=False)
     my_resolver.nameservers = generate_dns(dnsfile)
     # use random.sample to mantain the type [list]
@@ -174,12 +173,16 @@ def resolve(domain, dnsfile, dnsrand, expect):
     try:
         for nameserver in my_resolver.nameservers:
             my_answers = my_resolver.query(domain)
-            for rdata in my_answers:
-                LOGGER.info("%s IP %s resolved by %s", domain, rdata, nameserver)
-                if str(rdata) != expect:
+            rdata = [ x.address for x in my_answers ]
+            [ validate_ip(ip) for ip in expect.split(',') ]
+            for ip in expect.split(','):
+                if ip in rdata:
+                    LOGGER.info("%s IP %s resolved by %s", domain, ip, nameserver)
+                    rdata.remove(ip)
+            if len(rdata) > 0:
+                for data in rdata:
                     LOGGER.warning("IP expected %s doesn't match %s from %s! ALERT!",
-                                   expect, rdata, nameserver)
-                # return rdata
+                                       ip, data, nameserver)
     except dns.exception.DNSException as err:
         LOGGER.error("DNSException %s", err)
         sys.exit(42)

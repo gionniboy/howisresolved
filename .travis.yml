@@ -1,27 +1,19 @@
+sudo: false
+dist: trusty
 language: python
-matrix:
-  include:
-    - python: 3.3
-      env:
-      - TOXENV=py33
-    - python: 3.4
-      env:
-      - TOXENV=py34
-    - python: 3.5
-      env:
-      - TOXENV=py35
-    - python: 3.6
-      env:
-      - TOXENV=py36
-    - python: pypy3
-      env:
-      - TOXENV=pypy3
-  allow_failures:
-    - env: TOXENV=py33
+python:
+  - "3.6"
+env:
+  global:
+    - GIT_ASK_YESNO='false'
+    - PYTHONIOENCODING='utf-8'
 
 install:
-  - pip install tox coveralls pytest flake8 pylint
+  - "pip install --upgrade pip"
+  - "pip install -e . --upgrade --upgrade-strategy=only-if-needed"
+  - "pipenv install --dev"
+  - 'pip install -e "$(pwd)" --upgrade'
+  - 'pipenv install --system --dev'
+
 script:
-  - tox
-after_success:
-  - coveralls
+  - 'pipenv run time pytest -v'

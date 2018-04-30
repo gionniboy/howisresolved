@@ -14,3 +14,6 @@ requests = "==2.18.4"
 
 [requires]
 python_version = "3.6"
+
+[scripts]
+tests = "time -p pytest -v"

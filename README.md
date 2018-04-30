@@ -1,5 +1,15 @@
-# howisresolved
+[![Build Status](https://travis-ci.org/gionniboy/howisresolved.svg?branch=master)](https://travis-ci.org/gionniboy/howisresolved)
+
+[![Maintainability](https://api.codeclimate.com/v1/badges/80fe92c3529f911b676b/maintainability)](https://codeclimate.com/github/gionniboy/howisresolved/maintainability)
+
+[![Test Coverage](https://api.codeclimate.com/v1/badges/80fe92c3529f911b676b/test_coverage)](https://codeclimate.com/github/gionniboy/howisresolved/test_coverage)
+
+
+# **howisresolved**
 how is resolved is a little python script to resolve a domain from differents nameservers.
+
+
+### **how it works**
 
 DNS list is passed with a simple txt file.
 
@@ -19,7 +29,7 @@ On cli too if debug is active. [check logging.json]
 
 **Python3 required**.
 
-# To the Users
+### To the Users
 Install dependencies using Pipenv.
 ```console
 $ pipenv --three install
@@ -30,7 +40,7 @@ For a bit of info
 $ pipenv run python howisresolved.py --help
 ```
 
-## Example
+#### Example
 ```console
 $ pipenv run python howisresolved.py --domain python.org --expect 23.253.135.79
 $ pipenv run python howisresolved.py --domain python.org --dnsfile dnslist.txt --dnsrand 6 --expect 23.253.135.79
@@ -46,16 +56,16 @@ python.org IP 23.253.135.79 resolved by 208.67.222.222
 python.org IP 23.253.135.79 resolved by 64.6.64.6
 ```
 
-# To Contributors
+## To Contributors
 Install dev dipendencies to avoid useless issues.
 
 ```console
-$ pipenv install -d
+$ pipenv --three install -d
 ```
 
 To launch tests
 ```console
-% pipenv run pytest
+$ pipenv run pytest
 ```
 
 
@@ -64,11 +74,12 @@ issue&&PR || GTFO
 
 enjoy.
 
-## Authors
+## **Authors**
 
 * **GB 'firegarden' Pullarà** - [firegarden](https://firegarden.co)
 
 See also the list of [contributors](https://github.com/gionniboy/howisresolved/contributors) who participated in this project.
 
-## License
+
+### **License**
 This project is licensed under the BSD 3-Clause License - see the [LICENSE](LICENSE) file for details

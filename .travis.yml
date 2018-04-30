@@ -10,9 +10,7 @@ env:
 
 install:
   - "pip install --upgrade pip"
-  - "pip install -e . --upgrade --upgrade-strategy=only-if-needed"
   - "pipenv install --dev"
-  - 'pip install -e "$(pwd)" --upgrade'
   - 'pipenv install --system --dev'
 
 script:

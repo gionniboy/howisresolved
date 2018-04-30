@@ -41,6 +41,7 @@ def setup_logging(filepath="logging.json", log_level=logging.INFO):
     :param filepath: filename
     :param type: string
 
+    :return: True or Exit
     """
     if not os.path.exists(filepath):
         LOGGER.error('no logging config file founded.')
@@ -48,10 +49,11 @@ def setup_logging(filepath="logging.json", log_level=logging.INFO):
 
     with open(filepath, 'r') as fileconfig:
         config = json.load(fileconfig)
+
     logging.config.dictConfig(config)
     LOGGER.info('LOGGING SETUP from JSON %s', filepath)
-
     LOGGER.debug('LOGGING OK - path %s - level %s', filepath, log_level)
+    return True
 
 
 def validate_domain(domain):
@@ -66,6 +68,8 @@ def validate_domain(domain):
         r'^(?=.{4,255}$)([a-zA-Z0-9][a-zA-Z0-9-]{,61}[a-zA-Z0-9]\.)+[a-zA-Z0-9]{2,5}$')
     if not domain_regex.match(domain):
         sys.exit("Invalid domain specified.")
+
+    return True
 
 
 def download_publicdns(dnsfile):

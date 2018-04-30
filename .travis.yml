@@ -1,12 +1,16 @@
-sudo: false
-dist: trusty
 language: python
 python:
   - "3.6"
+  - "3.5"
+  - "3.4"
+  # pypy
+  - "pypy3.5"
+  - "pypy3.4"
 env:
   global:
     - GIT_ASK_YESNO='false'
     - PYTHONIOENCODING='utf-8'
+    - PIPENV_IGNORE_VIRTUALENVS=1
     - CC_TEST_REPORTER_ID=4892bdd6f7e61dcead6547cd119f43b14bc507a699c4ff2db7a838f2b3b66b88
 install:
   - "pip install --upgrade pip"
@@ -18,6 +22,6 @@ before_script:
   - chmod +x ./cc-test-reporter
   - ./cc-test-reporter before-build
 script:
-  - 'pipenv run time pytest -v'
+  - 'pipenv run time -p pytest -v'
 after_script:
   - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT

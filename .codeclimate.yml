@@ -12,5 +12,6 @@ plugins:
     enabled: true
 exclude_paths:
   - ".*"
+  - "test_*"
   - "LICENSE"
   - "dnslist.txt"

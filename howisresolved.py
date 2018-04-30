@@ -177,7 +177,7 @@ def main():
         help='Dnsfile text to read nameservers from.')
     parser.add_argument(
         '--dnsrand', default=6, type=int, help='how many ns pick from list and test.')
-    parser.add_argument('--expect', help='Set an expected IP to check against DNS results.')
+    parser.add_argument('--expect', required=True, help='Set an expected IP to check against DNS results.')
     args = parser.parse_args()
 
     domain = args.domain

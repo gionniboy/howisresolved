@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+"""
+how is resolved a given domain from differents nameservers
+"""
 
 # resolve a domain from different nameservers
 
@@ -7,7 +10,7 @@ __author__ = "GB Pullarà"
 __copyright__ = "Copyright 2018"
 __credits__ = ["joeyrs"]
 __license__ = "BSD-3clause"
-__version__ = "0.2.3"
+__version__ = "0.2.5"
 __maintainer__ = "gionniboy"
 __email__ = "giovbat@gmail.com"
 __status__ = "Development"
@@ -109,7 +112,8 @@ def generate_dns(dnsfile):
         filestat = os.stat(dnsfile)
         file_age = time.time() - filestat.st_mtime
         if file_age > (86400 * 3):
-            LOGGER.info("dns list older than 3 days: delete it if you want update it automatically")
+            LOGGER.info("dns list older than 3 days: \
+                        delete it if you want update it automatically")
 
         with open(dnsfile, 'r') as nameserver:
             dnslist = [line.rstrip() for line in nameserver]
@@ -154,7 +158,8 @@ def resolve(domain, dnsfile, dnsrand, expect):
             for rdata in my_answers:
                 LOGGER.info("%s IP %s resolved by %s", domain, rdata, nameserver)
                 if str(rdata) != expect:
-                    LOGGER.warning("IP expected %s doesn't match %s from %s! ALERT!", expect, rdata, nameserver)
+                    LOGGER.warning("IP expected %s doesn't match %s from %s! ALERT!",
+                                   expect, rdata, nameserver)
                 # return rdata
     except dns.exception.DNSException as err:
         LOGGER.error("DNSException %s", err)
@@ -167,17 +172,20 @@ def main():
         description='Check domain with different nameservers.',
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument('--domain', type=str, help="Domain to check.")
-    parser.add_argument('--dnsfile', default="./dnslist.txt", type=str, help='Dnsfile text to read nameservers from.')
-    parser.add_argument('--dnsrand', default=6, type=int, help='how many ns pick from list and test.')
+    parser.add_argument(
+        '--dnsfile', default="./dnslist.txt", type=str,
+        help='Dnsfile text to read nameservers from.')
+    parser.add_argument(
+        '--dnsrand', default=6, type=int, help='how many ns pick from list and test.')
     parser.add_argument('--expect', help='Set an expected IP to check against DNS results.')
     args = parser.parse_args()
 
-    DOMAIN = args.domain
-    DNSFILE = args.dnsfile
-    DNSRAND = args.dnsrand
-    EXPECT = args.expect
+    domain = args.domain
+    dnsfile = args.dnsfile
+    dnsrand = args.dnsrand
+    expect = args.expect
     try:
-        resolve(DOMAIN, DNSFILE, DNSRAND, EXPECT)
+        resolve(domain, dnsfile, dnsrand, expect)
     except KeyboardInterrupt:
         print("interrupted, stopping ...")
         sys.exit(42)

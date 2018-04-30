@@ -31,6 +31,18 @@ def test_validate_domain_exit():
         howisresolved.validate_domain(domain)
     assert 'Invalid domain specified.' in str(err.value)
 
+def test_validate_ip_ok():
+    """ test ip validation ok"""
+    ip = '1.1.1.1'
+    assert howisresolved.validate_ip(ip) is None
+
+def test_validate_ip_exit():
+    """ test ip validation exit """
+    ip = '1.1'
+    with pytest.raises(SystemExit) as err:
+        howisresolved.validate_ip(ip)
+    assert 'Invalid ip specified.' in str(err.value)
+
 
 def test_download_publicdns():
     """ test download publicdns list """

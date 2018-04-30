@@ -29,7 +29,7 @@ import logging.config
 
 import dns.resolver
 import requests
-
+import ipaddress
 
 # istanziate logger
 LOGGER = logging.getLogger(__name__)
@@ -67,6 +67,20 @@ def validate_domain(domain):
     if not domain_regex.match(domain):
         sys.exit("Invalid domain specified.")
 
+
+def validate_ip(ip):
+    """Check if the argument is a syntax-valid ip.
+
+    :param ip: ip string from positional arg
+    :param type: string
+
+    :return: validate or exit
+    """
+    try:
+        ipaddress.ip_address(ip)
+    except ValueError as err:
+        LOGGER.error(err)
+        sys.exit("Invalid ip specified.")
 
 def download_publicdns(dnsfile):
     """Download valid nameservers list from public-dns.info
@@ -146,6 +160,7 @@ def resolve(domain, dnsfile, dnsrand, expect):
     :rtype: string
     """
     validate_domain(domain)
+    validate_ip(expect)
     my_resolver = dns.resolver.Resolver(configure=False)
     my_resolver.nameservers = generate_dns(dnsfile)
     # use random.sample to mantain the type [list]

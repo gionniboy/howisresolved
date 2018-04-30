@@ -9,7 +9,14 @@ engines:
     enabled: true
   radon:
     enabled: true
+  pep8:
+    enabled: true
+  sonar-python:
+    enabled: true
 ratings:
   paths:
   - "**.py"
-exclude_paths: []
+exclude_paths:
+  - ".*"
+  - "LICENSE"
+  - "dnslist.txt"

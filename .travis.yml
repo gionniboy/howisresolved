@@ -5,7 +5,6 @@ python:
   - "3.4"
   # pypy
   - "pypy3.5"
-  - "pypy3.4"
 env:
   global:
     - GIT_ASK_YESNO='false'

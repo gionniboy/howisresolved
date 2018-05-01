@@ -7,6 +7,8 @@ name = "pypi"
 pylint = "*"
 "autopep8" = "*"
 pytest = "*"
+coverage = "*"
+pytest-cov = "*"
 
 [packages]
 dnspython = "==1.15.0"
@@ -17,4 +19,4 @@ ipaddress = "==1.0.22"
 python_version = "3.6"
 
 [scripts]
-tests = "time -p pytest -v"
+tests = "time -p pytest -v --cov=./"

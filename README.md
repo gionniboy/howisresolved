@@ -63,12 +63,15 @@ Install dev dipendencies to avoid useless issues.
 $ pipenv --three install -d
 ```
 
-To launch tests
+To launch tests with coverage
 ```console
-$ pipenv run pytest
+$ pipenv run pytest -v --cov=./
 ```
 
-
+or use pipenv shortcut
+```console
+$ pipenv run tests
+```
 
 issue&&PR || GTFO
 

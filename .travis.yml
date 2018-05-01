@@ -22,5 +22,6 @@ before_script:
   - ./cc-test-reporter before-build
 script:
   - 'pipenv run time -p pytest -v --cov=./'
+  - 'pipenv run coverage xml'
 after_script:
   - ./cc-test-reporter after-build --coverage-input-type coverage.py --exit-code $TRAVIS_TEST_RESULT

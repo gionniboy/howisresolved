@@ -2,16 +2,32 @@ version: "2"
 plugins:
   duplication:
     enabled: true
+    config:
+      languages:
+        python:
+          python_version: 3
   fixme:
     enabled: true
+    config:
+      strings:
+      - FIXME
+      - BUG
+      - TODO
   radon:
     enabled: true
+    config:
+      python_version: 3
+      threshold: "A"
   pep8:
     enabled: true
   sonar-python:
     enabled: true
+    config:
+      tests_patterns:
+        - test_*
 exclude_paths:
   - ".*"
   - "test_*"
-  - "LICENSE"
   - "dnslist.txt"
+  - "*.md"
+  - "LICENSE"

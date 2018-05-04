@@ -27,9 +27,10 @@ import json
 import logging
 import logging.config
 
+import ipaddress
+import validators
 import dns.resolver
 import requests
-import ipaddress
 
 # istanziate logger
 LOGGER = logging.getLogger(__name__)
@@ -49,42 +50,12 @@ def setup_logging(filepath="logging.json", log_level=logging.INFO):
 
     with open(filepath, 'r') as fileconfig:
         config = json.load(fileconfig)
+        logging.config.dictConfig(config)
+        LOGGER.info('LOGGING SETUP from JSON %s', filepath)
 
-    logging.config.dictConfig(config)
-    LOGGER.info('LOGGING SETUP from JSON %s', filepath)
     LOGGER.debug('LOGGING OK - path %s - level %s', filepath, log_level)
     return True
 
-
-def validate_domain(domain):
-    """Check if the argument is a syntax-valid domain.
-
-    :param domain: domain string from positional arg
-    :param type: string
-
-    :return: validate or exit
-    """
-    domain_regex = re.compile(
-        r'^(?=.{4,255}$)([a-zA-Z0-9][a-zA-Z0-9-]{,61}[a-zA-Z0-9]\.)+[a-zA-Z0-9]{2,5}$')
-    if not domain_regex.match(domain):
-        sys.exit("Invalid domain specified.")
-
-    return True
-
-
-def validate_ip(ip):
-    """Check if the argument is a syntax-valid ip.
-
-    :param ip: ip string from positional arg
-    :param type: string
-
-    :return: validate or exit
-    """
-    try:
-        ipaddress.ip_address(ip)
-    except ValueError as err:
-        LOGGER.error(err)
-        sys.exit("Invalid ip specified.")
 
 def download_publicdns(dnsfile):
     """Download valid nameservers list from public-dns.info
@@ -163,7 +134,7 @@ def resolve(domain, dnsfile, dnsrand, expect):
     :return: domain resolved with specified nameserver
     :rtype: string
     """
-    validate_domain(domain)
+    validators.domain(domain)
     my_resolver = dns.resolver.Resolver(configure=False)
     my_resolver.nameservers = generate_dns(dnsfile)
     # use random.sample to mantain the type [list]
@@ -173,16 +144,16 @@ def resolve(domain, dnsfile, dnsrand, expect):
     try:
         for nameserver in my_resolver.nameservers:
             my_answers = my_resolver.query(domain)
-            rdata = [ x.address for x in my_answers ]
-            [ validate_ip(ip) for ip in expect.split(',') ]
-            for ip in expect.split(','):
-                if ip in rdata:
-                    LOGGER.info("%s IP %s resolved by %s", domain, ip, nameserver)
-                    rdata.remove(ip)
+            rdata = [x.address for x in my_answers]
+            [ipaddress.ip_address(ipaddr) for ipaddr in expect.split(',')]
+            for ipaddr in expect.split(','):
+                if ipaddr in rdata:
+                    LOGGER.info("%s IP %s resolved by %s", domain, ipaddr, nameserver)
+                    rdata.remove(ipaddr)
             if len(rdata) > 0:
                 for data in rdata:
                     LOGGER.warning("IP expected %s doesn't match %s from %s! ALERT!",
-                                       ip, data, nameserver)
+                                       ipaddr, data, nameserver)
     except dns.exception.DNSException as err:
         LOGGER.error("DNSException %s", err)
         sys.exit(42)
@@ -199,13 +170,15 @@ def main():
         help='Dnsfile text to read nameservers from.')
     parser.add_argument(
         '--dnsrand', default=6, type=int, help='how many ns pick from list and test.')
-    parser.add_argument('--expect', required=True, help='Set an expected IP to check against DNS results.')
+    parser.add_argument('--expect', required=True,
+        help='Set an expected IP to check against DNS results.')
     args = parser.parse_args()
 
     domain = args.domain
     dnsfile = args.dnsfile
     dnsrand = args.dnsrand
     expect = args.expect
+
     try:
         resolve(domain, dnsfile, dnsrand, expect)
     except KeyboardInterrupt:

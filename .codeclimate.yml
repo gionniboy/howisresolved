@@ -20,6 +20,17 @@ plugins:
       threshold: "A"
   pep8:
     enabled: true
+    config:
+      python_version: 3
+      max_line_length: 100
+      statistics: true
+      count: False
+      show_source: true
+      checks:
+        E402:
+          enabled: false
+        E501:
+          enabled: false
   sonar-python:
     enabled: true
     config:

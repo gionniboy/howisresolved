@@ -14,6 +14,7 @@ pytest-cov = "*"
 dnspython = "==1.15.0"
 requests = "==2.18.4"
 ipaddress = "==1.0.22"
+validators = "*"
 
 [requires]
 python_version = "3.6"

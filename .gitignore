@@ -1,6 +1,7 @@
 dnslist.txt
 *.log
 *.txt
+!requirements-pyup.txt
 
 # Created by https://www.gitignore.io/api/osx,linux,python,windows,virtualenv,visualstudiocode
 

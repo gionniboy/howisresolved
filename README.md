@@ -1,8 +1,10 @@
 [![Build Status](https://travis-ci.org/gionniboy/howisresolved.svg?branch=master)](https://travis-ci.org/gionniboy/howisresolved)
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/80fe92c3529f911b676b/maintainability)](https://codeclimate.com/github/gionniboy/howisresolved/maintainability)
-
 [![Test Coverage](https://api.codeclimate.com/v1/badges/80fe92c3529f911b676b/test_coverage)](https://codeclimate.com/github/gionniboy/howisresolved/test_coverage)
+
+[![Updates](https://pyup.io/repos/github/gionniboy/howisresolved/shield.svg)](https://pyup.io/repos/github/gionniboy/howisresolved/)
+[![Python 3](https://pyup.io/repos/github/gionniboy/howisresolved/python-3-shield.svg)](https://pyup.io/repos/github/gionniboy/howisresolved/)
 
 
 # **howisresolved**

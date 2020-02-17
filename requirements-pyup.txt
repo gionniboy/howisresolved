@@ -6,7 +6,7 @@ dnspython==1.16.0
 idna==2.9
 ipaddress==1.0.23
 requests==2.22.0
-six==1.11.0
+six==1.14.0
 urllib3==1.22
 validators==0.12.2
 # dev
@@ -24,5 +24,5 @@ pycodestyle==2.4.0
 pylint==1.9.1
 pytest-cov==2.5.1
 pytest==3.6.1
-six==1.11.0
+six==1.14.0
 wrapt==1.10.11

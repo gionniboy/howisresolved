@@ -7,7 +7,7 @@ idna==2.9
 ipaddress==1.0.23
 requests==2.23.0
 six==1.14.0
-urllib3==1.22
+urllib3==1.25.9
 validators==0.12.2
 # dev
 astroid==1.6.4

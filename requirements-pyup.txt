@@ -23,6 +23,6 @@ py==1.8.1
 pycodestyle==2.6.0
 pylint==2.5.2
 pytest-cov==2.8.1
-pytest==3.6.1
+pytest==5.4.2
 six==1.14.0
 wrapt==1.10.11

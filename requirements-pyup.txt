@@ -4,7 +4,7 @@ chardet==3.0.4
 decorator==4.4.2
 dnspython==1.16.0
 idna==2.9
-ipaddress==1.0.22
+ipaddress==1.0.23
 requests==2.18.4
 six==1.11.0
 urllib3==1.22

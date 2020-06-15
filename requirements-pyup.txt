@@ -1,7 +1,7 @@
 -i https://pypi.org/simple
 certifi==2020.4.5.2
 chardet==3.0.4
-decorator==4.3.0
+decorator==4.4.2
 dnspython==1.15.0
 idna==2.6
 ipaddress==1.0.22

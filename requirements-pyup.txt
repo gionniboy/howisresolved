@@ -18,7 +18,7 @@ isort==5.1.4
 lazy-object-proxy==1.5.0
 mccabe==0.6.1
 more-itertools==8.4.0
-pluggy==0.6.0
+pluggy==0.13.1
 py==1.5.3
 pycodestyle==2.4.0
 pylint==1.9.1

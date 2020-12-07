@@ -2,7 +2,7 @@
 certifi==2020.12.5
 chardet==3.0.4
 decorator==4.4.2
-dnspython==1.15.0
+dnspython==2.0.0
 idna==2.6
 ipaddress==1.0.22
 requests==2.18.4

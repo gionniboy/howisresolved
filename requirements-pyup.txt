@@ -8,7 +8,7 @@ ipaddress==1.0.23
 requests==2.25.0
 six==1.15.0
 urllib3==1.26.2
-validators==0.12.2
+validators==0.18.1
 # dev
 astroid==1.6.4
 attrs==18.1.0

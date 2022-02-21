@@ -25,4 +25,4 @@ pylint==2.12.2
 pytest-cov==3.0.0
 pytest==7.0.1
 six==1.16.0
-wrapt==1.10.11
+wrapt==1.13.3

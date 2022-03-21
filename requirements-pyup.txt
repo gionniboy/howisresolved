@@ -5,7 +5,7 @@ decorator==5.1.1
 dnspython==2.2.1
 idna==3.3
 ipaddress==1.0.23
-requests==2.18.4
+requests==2.27.1
 six==1.11.0
 urllib3==1.22
 validators==0.12.2

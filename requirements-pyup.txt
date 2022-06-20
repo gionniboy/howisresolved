@@ -16,7 +16,7 @@ autopep8==1.6.0
 coverage==6.4.1
 isort==5.10.1
 lazy-object-proxy==1.7.1
-mccabe==0.6.1
+mccabe==0.7.0
 more-itertools==4.2.0
 pluggy==0.6.0
 py==1.5.3

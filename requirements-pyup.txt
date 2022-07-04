@@ -1,5 +1,5 @@
 -i https://pypi.org/simple
-certifi==2018.4.16
+certifi==2022.6.15
 chardet==3.0.4
 decorator==4.3.0
 dnspython==1.15.0

@@ -22,7 +22,7 @@ pluggy==1.0.0
 py==1.11.0
 pycodestyle==2.8.0
 pylint==2.14.5
-pytest-cov==2.5.1
+pytest-cov==3.0.0
 pytest==3.6.1
 six==1.16.0
 wrapt==1.10.11

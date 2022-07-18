@@ -6,7 +6,7 @@ how is resolved a given domain from differents nameservers
 
 # resolve a domain from different nameservers
 
-__author__ = "GB Pullarà"
+__author__ = "G Pullara"
 __copyright__ = "Copyright 2018"
 __credits__ = ["joeyrs"]
 __license__ = "BSD-3clause"
